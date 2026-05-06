@@ -1,0 +1,80 @@
+MPLINK 4.49, Linker
+Linker Map File - Created Tue May 05 00:13:48 2026
+
+                                 Section Info
+                  Section       Type    Address   Location Size(Bytes)
+                ---------  ---------  ---------  ---------  ---------
+                   .org_0       code   0x000000    program   0x000004
+                   .cinit    romdata   0x000004    program   0x000002
+                   .org_1       code   0x000020    program   0x000184
+
+
+
+                              Program Memory Usage 
+                               Start         End      
+                           ---------   ---------      
+                            0x000000    0x000005      
+                            0x000020    0x0001a3      
+            394 out of 33048 program addresses used, program memory utilization is 1%
+
+
+
+                              Symbols - Sorted by Name
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+              Apagar_Todo   0x00016c    program     static C:\Users\UsuarioF\Desktop\CLASES\Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr1\Parte2\Codigo.asm
+         Azules_Parpadean   0x000144    program     static C:\Users\UsuarioF\Desktop\CLASES\Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr1\Parte2\Codigo.asm
+          Boton_S3_Espera   0x00016e    program     static C:\Users\UsuarioF\Desktop\CLASES\Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr1\Parte2\Codigo.asm
+              BucleInicio   0x000038    program     static C:\Users\UsuarioF\Desktop\CLASES\Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr1\Parte2\Codigo.asm
+        Cambiar_Secuencia   0x000082    program     static C:\Users\UsuarioF\Desktop\CLASES\Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr1\Parte2\Codigo.asm
+                 Delay1ms   0x000186    program     static C:\Users\UsuarioF\Desktop\CLASES\Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr1\Parte2\Codigo.asm
+                 DelayXms   0x000178    program     static C:\Users\UsuarioF\Desktop\CLASES\Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr1\Parte2\Codigo.asm
+               EncuestaON   0x00005e    program     static C:\Users\UsuarioF\Desktop\CLASES\Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr1\Parte2\Codigo.asm
+         Espera_Soltar_S2   0x000064    program     static C:\Users\UsuarioF\Desktop\CLASES\Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr1\Parte2\Codigo.asm
+                   Inicio   0x000020    program     static C:\Users\UsuarioF\Desktop\CLASES\Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr1\Parte2\Codigo.asm
+            Ola_Hacia_Der   0x0000fa    program     static C:\Users\UsuarioF\Desktop\CLASES\Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr1\Parte2\Codigo.asm
+            Ola_Hacia_Izq   0x0000e0    program     static C:\Users\UsuarioF\Desktop\CLASES\Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr1\Parte2\Codigo.asm
+                  Opc_sec   0x00006a    program     static C:\Users\UsuarioF\Desktop\CLASES\Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr1\Parte2\Codigo.asm
+              Reset_A_Uno   0x0000a2    program     static C:\Users\UsuarioF\Desktop\CLASES\Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr1\Parte2\Codigo.asm
+            Reset_General   0x000050    program     static C:\Users\UsuarioF\Desktop\CLASES\Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr1\Parte2\Codigo.asm
+          Rojos_Parpadean   0x00011c    program     static C:\Users\UsuarioF\Desktop\CLASES\Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr1\Parte2\Codigo.asm
+             Rota_Cortina   0x0000d4    program     static C:\Users\UsuarioF\Desktop\CLASES\Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr1\Parte2\Codigo.asm
+              SQ1_Cortina   0x0000a8    program     static C:\Users\UsuarioF\Desktop\CLASES\Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr1\Parte2\Codigo.asm
+                  SQ2_Ola   0x0000dc    program     static C:\Users\UsuarioF\Desktop\CLASES\Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr1\Parte2\Codigo.asm
+               SQ3_Sirena   0x000118    program     static C:\Users\UsuarioF\Desktop\CLASES\Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr1\Parte2\Codigo.asm
+            Sigue_Cortina   0x0000ce    program     static C:\Users\UsuarioF\Desktop\CLASES\Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr1\Parte2\Codigo.asm
+                   bucle1   0x000190    program     static C:\Users\UsuarioF\Desktop\CLASES\Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr1\Parte2\Codigo.asm
+               bucleVeces   0x00017a    program     static C:\Users\UsuarioF\Desktop\CLASES\Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr1\Parte2\Codigo.asm
+                    salir   0x00019e    program     static C:\Users\UsuarioF\Desktop\CLASES\Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr1\Parte2\Codigo.asm
+
+
+
+                              Symbols - Sorted by Address
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                   Inicio   0x000020    program     static C:\Users\UsuarioF\Desktop\CLASES\Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr1\Parte2\Codigo.asm
+              BucleInicio   0x000038    program     static C:\Users\UsuarioF\Desktop\CLASES\Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr1\Parte2\Codigo.asm
+            Reset_General   0x000050    program     static C:\Users\UsuarioF\Desktop\CLASES\Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr1\Parte2\Codigo.asm
+               EncuestaON   0x00005e    program     static C:\Users\UsuarioF\Desktop\CLASES\Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr1\Parte2\Codigo.asm
+         Espera_Soltar_S2   0x000064    program     static C:\Users\UsuarioF\Desktop\CLASES\Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr1\Parte2\Codigo.asm
+                  Opc_sec   0x00006a    program     static C:\Users\UsuarioF\Desktop\CLASES\Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr1\Parte2\Codigo.asm
+        Cambiar_Secuencia   0x000082    program     static C:\Users\UsuarioF\Desktop\CLASES\Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr1\Parte2\Codigo.asm
+              Reset_A_Uno   0x0000a2    program     static C:\Users\UsuarioF\Desktop\CLASES\Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr1\Parte2\Codigo.asm
+              SQ1_Cortina   0x0000a8    program     static C:\Users\UsuarioF\Desktop\CLASES\Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr1\Parte2\Codigo.asm
+            Sigue_Cortina   0x0000ce    program     static C:\Users\UsuarioF\Desktop\CLASES\Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr1\Parte2\Codigo.asm
+             Rota_Cortina   0x0000d4    program     static C:\Users\UsuarioF\Desktop\CLASES\Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr1\Parte2\Codigo.asm
+                  SQ2_Ola   0x0000dc    program     static C:\Users\UsuarioF\Desktop\CLASES\Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr1\Parte2\Codigo.asm
+            Ola_Hacia_Izq   0x0000e0    program     static C:\Users\UsuarioF\Desktop\CLASES\Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr1\Parte2\Codigo.asm
+            Ola_Hacia_Der   0x0000fa    program     static C:\Users\UsuarioF\Desktop\CLASES\Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr1\Parte2\Codigo.asm
+               SQ3_Sirena   0x000118    program     static C:\Users\UsuarioF\Desktop\CLASES\Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr1\Parte2\Codigo.asm
+          Rojos_Parpadean   0x00011c    program     static C:\Users\UsuarioF\Desktop\CLASES\Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr1\Parte2\Codigo.asm
+         Azules_Parpadean   0x000144    program     static C:\Users\UsuarioF\Desktop\CLASES\Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr1\Parte2\Codigo.asm
+              Apagar_Todo   0x00016c    program     static C:\Users\UsuarioF\Desktop\CLASES\Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr1\Parte2\Codigo.asm
+          Boton_S3_Espera   0x00016e    program     static C:\Users\UsuarioF\Desktop\CLASES\Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr1\Parte2\Codigo.asm
+                 DelayXms   0x000178    program     static C:\Users\UsuarioF\Desktop\CLASES\Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr1\Parte2\Codigo.asm
+               bucleVeces   0x00017a    program     static C:\Users\UsuarioF\Desktop\CLASES\Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr1\Parte2\Codigo.asm
+                 Delay1ms   0x000186    program     static C:\Users\UsuarioF\Desktop\CLASES\Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr1\Parte2\Codigo.asm
+                   bucle1   0x000190    program     static C:\Users\UsuarioF\Desktop\CLASES\Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr1\Parte2\Codigo.asm
+                    salir   0x00019e    program     static C:\Users\UsuarioF\Desktop\CLASES\Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr1\Parte2\Codigo.asm
+
+

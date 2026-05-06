@@ -1,0 +1,25 @@
+PARA TENER UNA PLANTILLA VACIA Y COPIAR LA CARPETA 
+	Una vez copiado a otra carpeta cambiar los nombres
+-------------------------------------------------------------
+Abre Plantilla_vacia.
+
+1. Cambiar el nombre del Proyecto (.mcp)
+Ve al menú Project > Save Project As...
+Escribe el nuevo nombre (por ejemplo: p1).
+
+2. Cambiar el nombre del Workspace (.mcw)
+Ve al menú File > Save Workspace As...
+Escribe el mismo nombre: p1.
+3. Limpieza (Opcional pero recomendado)
+Borra los de "Plantilla" y quedarte solo con los de p1.
+
+//////////////
+En Source Files, haz clic derecho sobre Plantilla.asm.
+Selecciona Remove
+en Windows y cámbiale el nombre a Plantilla.asm (ejemplo p1.asm)
+En MPLAB Haz clic derecho sobre la carpeta Source Files.
+Selecciona Add Files....
+Busca tu nuevo archivo p1.asm (doble clic)
+
+--------------
+"Build All": Compilar para confirmar que el programa encuentra todo y no hay errores de ruta. 

@@ -76,7 +76,8 @@
 	Boton_secuencias: 
 		BTFSS   PORTC, 4
 		GOTO 	Boton_secuencias
-		CALL    Delay100ms  
+		CALL    Delay100ms 
+		GOTO    Opc_fuera 
 ;---------------------------------------
 	Opcion_sec:
 		; Al hacer una resta buscamos comparar el estado del boton con W = 1
@@ -86,23 +87,30 @@
 		MOVLW	d'1'
 		SUBWF   B_Estados, W; compara estado del boton y con w=1 (estado1)
 		BTFSC 	STATUS, Z
-		CALL 	Cortina
-		RETURN
+		GOTO    Llamar_Cortina
 
 		MOVLW	d'2'
 		SUBWF   B_Estados, W; compara estado del boton y con w=2 (estado2)
 		BTFSC 	STATUS, Z
-		CALL 	Ola
-		RETURN
+		GOTO    Llamar_Ola
 
 		MOVLW	d'3'
 		SUBWF   B_Estados, W; compara estado del boton y con w=3 (estado2)
 		BTFSC 	STATUS, Z
-		CALL 	Luces_Policia
+		GOTO    Llamar_Policia
 		RETURN
 
 		;같같같같같같같같같같같같같같같같같같같같같같같같같같같같같같같같같같같같
-
+;	------------------------
+	Llamar_Cortina:
+		CALL 	Cortina
+		RETURN
+	Llamar_Ola:
+		CALL 	Ola
+		RETURN
+	Llamar_Policia:
+		CALL 	Luces_Policia
+		RETURN
 ; --------------------------
 	Opc_fuera:
 		;같같같같같같같같같같같같같같같같같같같같같같같같같같같같같같같같같같같같
@@ -111,7 +119,7 @@
 		INCF    B_Estados, 1
 		MOVLW	d'4'        ; No hay opc 4, hacer que sea 1
 		SUBWF   B_Estados, W; compara estado del boton y con w=1 (estado1)
-		BTFSC 	STATUS, Z
+		BTFSS 	STATUS, Z
 		GOTO 	Repetir_Estado
 
 	opcion1:

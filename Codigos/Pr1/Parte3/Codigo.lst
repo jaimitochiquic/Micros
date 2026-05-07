@@ -1,14 +1,14 @@
-MPASM  5.51                        CODIGO.ASM   5-5-2026  1:26:56         PAGE  1
+MPASM  5.51                        CODIGO.ASM   5-7-2026  10:29:12         PAGE  1
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
                       00001         ; PRACTICA 1 - MICROCONTROLADORES
-                      00002         ; PARTE 2: Secuencias Ciclicas (Logica de Maquina de Estados)
+                      00002         ; PARTE 3: Maquina de estados 3 sec.
                       00003         ; MARZO-AGOSTO 2026
                       00004         ; Jaime Chiqui
-                      00005 
+                      00005         
                       00006         ;*************************************************************************** 
                       00007         ; Program Header ***********************************************************
                       00008                 LIST p=18f4550                  ;Especifica el dispositivo
@@ -22,309 +22,374 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
                       00007 ;==========================================================================
                       00008 
                       01764         LIST
-                      00010         ;***************************************************************************
-                      00011 
-                      00012         ;***** DECLARACIÓN VARIABLES ******
+                      00010         ;*************************************************************************** 
+                      00011         
+                      00012         
+                      00013         ;***** DECLARACIÓN VARIABLES ******
 Warning[207]: Found label after column 1. (Contador1)
-  00000000            00013         Contador1       equ 0x00
+  00000000            00014         Contador1               equ     0x00
 Warning[207]: Found label after column 1. (Contador2)
-  00000001            00014         Contador2       equ 0x01
+  00000001            00015         Contador2               equ 0x01
+Warning[207]: Found label after column 1. (ContaDelay100)
+  00000002            00016         ContaDelay100   equ 0x02
 Warning[207]: Found label after column 1. (Xveces)
-  00000002            00015         Xveces          equ 0x02
-Warning[207]: Found label after column 1. (ContadorInicio)
-  00000003            00016         ContadorInicio  equ 0x03
-Warning[207]: Found label after column 1. (EstadoSec)
-  00000004            00017         EstadoSec       equ 0x04    ; Variable ESTADO de la pizarra
-Warning[207]: Found label after column 1. (ContaCiclos)
-  00000005            00018         ContaCiclos     equ 0x05    ; SQ3 (policia)
+  00000003            00017         Xveces                  equ 0x03
 Warning[207]: Found label after column 1. (NH)
-  00000006            00019         NH              equ 0x06    ; Para la Cortina
+  00000004            00018         NH                              equ 0x04
 Warning[207]: Found label after column 1. (NL)
-  00000007            00020         NL              equ 0x07    ; Para la Cortina
-                      00021         ;**********************************
-                      00022         
-                      00023         ;----- Definición de Vectores --------------
-                      00024                 org             0x00   ; Vector de Inicio / reset
-000000 EF?? F???      00025                 goto    Inicio
-                      00026         ;-------------------------------------------
-                      00027         
-                      00028         ; ++++ INICIO DEL PROGRAMA +++++++++++++++++
-                      00029                 org     0x20    ; Dónde comienza el programa 
-                      00030 
+  00000005            00019         NL                              equ 0x05
+Warning[207]: Found label after column 1. (ContadorInicio)
+  00000006            00020         ContadorInicio  equ 0x06        ; Led parpadeante
+Warning[207]: Found label after column 1. (B_Estados)
+  00000007            00021         B_Estados               equ 0x07        ; Para los 3 estados
+Warning[207]: Found label after column 1. (ContaCiclos)
+  00000008            00022         ContaCiclos     equ 0x08        ; 3 azul, 3 rojos
+                      00023         ;**********************************
+                      00024         
+                      00025         ;----- Definición de Vectores --------------
+                      00026                 org             0x00   ; Vector de Inicio / reset
+000000 EF?? F???      00027                 goto    Inicio
+                      00028         ;-------------------------------------------
+                      00029         
+                      00030         ; ++++ INICIO DEL PROGRAMA +++++++++++++++++
+                      00031                 org     0x20    ; Dónde comienza el programa 
 Warning[207]: Found label after column 1. (Inicio)
-000020                00031         Inicio:
-                      00032 ;--- Configuracion de perifericos ---
-000020 6A95           00033         CLRF    TRISD       ; Puerto D como salidas (00000000)
-000022 966D           00034         BCF     UCON, 3     ; RC4 Y RC5 entradas
-000024 866F           00035         BSF     UCFG, 3     ; Especial RC4 Y RC5
-MPASM  5.51                        CODIGO.ASM   5-5-2026  1:26:56         PAGE  2
+000020                00032         Inicio:
+                      00033         
+                      00034         ;-------------------------------------------
+MPASM  5.51                        CODIGO.ASM   5-7-2026  10:29:12         PAGE  2
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-000026 9094           00036         BCF     TRISC, 0    ; led_piloto
-                      00037 
-000028 6A8C           00038         CLRF    LATD        ; Puerto D apagado
-00002A 908B           00039         BCF     LATC, 0     ; Led_piloto OFF
-                      00040 
-                      00041 ;--- INICIALIZACIÓN DE VARIABLES ------
-00002C 0EC6           00042         MOVLW   d'198'
-00002E 6E00           00043         MOVWF   Contador1
-000030 0E15           00044         MOVLW   d'21'
-000032 6E01           00045         MOVWF   Contador2
-000034 0E14           00046         MOVLW   d'20'           
-000036 6E03           00047         MOVWF   ContadorInicio 
-                      00048 
-                      00049 ;------- SECUENCIA DE INICIO -------
-000038                00050 BucleInicio:
-000038 808B           00051         BSF     LATC, 0
-00003A 0E32           00052         MOVLW   d'50'
-00003C EC?? F???      00053         CALL    DelayXms
-000040 908B           00054         BCF     LATC, 0
-000042 0E32           00055         MOVLW   d'50'
-000044 EC?? F???      00056         CALL    DelayXms
-000048 2E03           00057         DECFSZ  ContadorInicio, 1
-00004A EF?? F???      00058         GOTO    BucleInicio
-00004E 808B           00059         BSF     LATC, 0
-                      00060 
-                      00061 ;=================================================
-                      00062 ; LOGICA PRINCIPAL (Estructura de la Pizarra)
-                      00063 ;=================================================
-000050                00064 Estado_0:
-000050 6A04           00065         CLRF    EstadoSec       ; ESTADO = 0 inicial
-000052 6A8C           00066         CLRF    LATD
-                      00067 
-000054                00068 ENC1:
-000054 B882           00069         BTFSC   PORTC, 4        ; Espera S2 para iniciar
-000056 EF?? F???      00070         GOTO    ENC1
-                      00071 
-00005A                00072 AntRet:
-00005A A882           00073         BTFSS   PORTC, 4        ; Antirrebote
-00005C EF?? F???      00074         GOTO    AntRet
-                      00075         
-000060 2A04           00076         INCF    EstadoSec, 1    ; ESTADO + 1
-                      00077         
-                      00078         ; Limpieza de variables al cambiar de estado
-000062 0E80           00079         MOVLW   b'10000000'
-000064 6E06           00080         MOVWF   NH
-000066 0E01           00081         MOVLW   b'00000001'
-000068 6E07           00082         MOVWF   NL
-00006A 6A8C           00083         CLRF    LATD
-                      00084 
-00006C                00085 Rep:
-00006C EC?? F???      00086         CALL    SecuenciaX      ; Llama al enrutador (Subrutina)
-                      00087 
-000070 AA82           00088         BTFSS   PORTC, 5        ; btfsc S3 (Asumiendo activo bajo)
-MPASM  5.51                        CODIGO.ASM   5-5-2026  1:26:56         PAGE  3
+                      00035         ; Configuracion de perifericos
+000020 6A95           00036                 CLRF    TRISD           ; TRISD = 00000000
+000022 966D           00037                 BCF     UCON, 3         ; RC4 Y RC5 entradas (S2 Y S3)
+000024 866F           00038                 BSF     UCFG, 3         ; Especial RC4 Y RC5
+000026 9094           00039                 BCF     TRISC,0         ; led_piloto
+                      00040         ;-------------------------------------------
+                      00041         ;******* Inicializacion de I/O ********
+000028 6A8C           00042                 CLRF    LATD            ; Empezamos con el Puerto D apagado
+00002A 908B           00043                 BCF     LATC, 0         ; Led_piloto OFF
+                      00044         ;******************************************
+                      00045         
+                      00046         ;--- INICIALIZACIÓN DE VARIABLES ------
+00002C 0EC6           00047                 MOVLW   d'198'                  ;W = 198
+00002E 6E00           00048                 MOVWF   Contador1               ;Contador1 = 10
+000030 0E15           00049                 MOVLW   d'21'                   ;W = 21
+000032 6E01           00050                 MOVWF   Contador2               ;Contador2 = 10
+000034 0E14           00051                 MOVLW   d'20'           
+000036 6E06           00052         MOVWF   ContadorInicio  ;RC0 parpadea 20 veces / 50 ms
+                      00053 
+000038 0E00           00054                 MOVLW   d'0'    ; Inicia con la cortina
+00003A 6E07           00055         MOVWF   B_Estados
+                      00056 
+                      00057 ;------- SECUENCIA DE INICIO -------
+Warning[207]: Found label after column 1. (BucleInicio)
+00003C                00058         BucleInicio:
+00003C 808B           00059             BSF     LATC, 0         ; Enciende LED RC0-Led_piloto
+00003E 0E32           00060             MOVLW   d'50'
+000040 EC?? F???      00061             CALL    DelayXms
+000044 908B           00062             BCF     LATC, 0         ; Apaga LED RC0-Led_piloto
+000046 0E32           00063             MOVLW   d'50'
+000048 EC?? F???      00064             CALL    DelayXms
+00004C 2E06           00065             DECFSZ  ContadorInicio, 1 ; Decrementa y salta si es cero
+00004E EF?? F???      00066             GOTO    BucleInicio
+                      00067             
+000052 808B           00068             BSF     LATC, 0         ; RC0-Led_piloto ENCENDIDO
+                      00069 ;-------------------------------------------------
+                      00070 
+                      00071 ;/////////////////////////////////////
+Warning[207]: Found label after column 1. (EncuestaON)
+000054                00072         EncuestaON:                             ; Espera a S2 para iniciar secuencia
+000054 B882           00073                 BTFSC   PORTC, 4
+000056 EF?? F???      00074                 GOTO    EncuestaON
+00005A EC?? F???      00075                 CALL    Delay100ms     ; controla el estado transistorio
+Warning[207]: Found label after column 1. (Boton_secuencias)
+00005E                00076         Boton_secuencias: 
+00005E A882           00077                 BTFSS   PORTC, 4
+000060 EF?? F???      00078                 GOTO    Boton_secuencias
+000064 EC?? F???      00079                 CALL    Delay100ms 
+000068 EF?? F???      00080                 GOTO    Opc_fuera 
+                      00081 ;---------------------------------------
+Warning[207]: Found label after column 1. (Opcion_sec)
+00006C                00082         Opcion_sec:
+                      00083                 ; Al hacer una resta buscamos comparar el estado del boton con W = 1
+MPASM  5.51                        CODIGO.ASM   5-7-2026  10:29:12         PAGE  3
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-000072 EF?? F???      00089         GOTO    ENC2            ; Si presionan S3 -> ir a ENC2 (Apagar)
-                      00090 
-000076 A882           00091         BTFSS   PORTC, 4        ; btfsc S2 
-000078 EF?? F???      00092         GOTO    AntRet          ; Si presionan S2 -> ir a AntRet (Sumar)
-                      00093 
-00007C EF?? F???      00094         GOTO    Rep             ; goto Rep (Ciclo infinito del jefe)
-                      00095 
-000080                00096 ENC2:
-000080 6A04           00097         CLRF    EstadoSec       ; CLRF ESTADO
-000082 6A8C           00098         CLRF    LATD            ; Apaga LEDs
-000084                00099 Esp_S3:
-000084 AA82           00100         BTFSS   PORTC, 5        ; Espera que el usuario suelte S3
-000086 EF?? F???      00101         GOTO    Esp_S3
-00008A EF?? F???      00102         GOTO    ENC1            ; Regresa a ENC1 a esperar inicio
-                      00103 
-                      00104 ;=================================================
-                      00105 ; SecuenciaX a hacer 
-                      00106 ;=================================================
-00008E                00107 SecuenciaX:
-                      00108         ; Lógica: if EST == 4
-00008E 0E04           00109         MOVLW   d'4'
-000090 5C04           00110         SUBWF   EstadoSec, W    ; Resta ESTADO - 4
-000092 A4D8           00111         BTFSS   STATUS, Z       ; Si Z=0 (No es 4), salta a evaluar
-000094 EF?? F???      00112         GOTO    Pregestados
-                      00113 
-                      00114         ; Si es 4:
-000098 0E01           00115         MOVLW   d'1'
-00009A 6E04           00116         MOVWF   EstadoSec       ; EST = 1
-00009C 6A8C           00117         CLRF    LATD
-00009E 0012           00118         RETURN                  ; Retorna para que evalue con EST=1
-                      00119 
-0000A0                00120 Pregestados:
-                      00121         ; PREGESTADO 1
-0000A0 0E01           00122         MOVLW   d'1'
-0000A2 5C04           00123         SUBWF   EstadoSec, W
-0000A4 A4D8           00124         BTFSS   STATUS, Z
-0000A6 EF?? F???      00125         GOTO    Pregestado2
-0000AA EC?? F???      00126         CALL    SQ1_Cortina     ; Sec1
-0000AE 0012           00127         RETURN
-                      00128 
-0000B0                00129 Pregestado2:
-                      00130         ; PREGESTADO 2
-0000B0 0E02           00131         MOVLW   d'2'
-0000B2 5C04           00132         SUBWF   EstadoSec, W
-0000B4 A4D8           00133         BTFSS   STATUS, Z
-0000B6 EF?? F???      00134         GOTO    Pregestado3
-0000BA EC?? F???      00135         CALL    SQ2_Ola         ; Sec2
-0000BE 0012           00136         RETURN
-                      00137 
-0000C0                00138 Pregestado3:
-                      00139         ; PREGESTADO 3 (Por descarte)
-0000C0 EC?? F???      00140         CALL    SQ3_Sirena      ; Sec3
-0000C4 0012           00141         RETURN
-MPASM  5.51                        CODIGO.ASM   5-5-2026  1:26:56         PAGE  4
+                      00084                 ; es decir si son iguales 1-1 = 0 (estamos en el estado 1)
+                      00085                 ; caso contrario si tengo estado 2-1= 1 (No estamos en estado 1 probar con el 2)
+                      00086 
+00006C 0E01           00087                 MOVLW   d'1'
+00006E 5C07           00088                 SUBWF   B_Estados, W; compara estado del boton y con w=1 (estado1)
+000070 B4D8           00089                 BTFSC   STATUS, Z
+000072 EF?? F???      00090                 GOTO    Llamar_Cortina
+                      00091 
+000076 0E02           00092                 MOVLW   d'2'
+000078 5C07           00093                 SUBWF   B_Estados, W; compara estado del boton y con w=2 (estado2)
+00007A B4D8           00094                 BTFSC   STATUS, Z
+00007C EF?? F???      00095                 GOTO    Llamar_Ola
+                      00096 
+000080 0E03           00097                 MOVLW   d'3'
+000082 5C07           00098                 SUBWF   B_Estados, W; compara estado del boton y con w=3 (estado2)
+000084 B4D8           00099                 BTFSC   STATUS, Z
+000086 EF?? F???      00100                 GOTO    Llamar_Policia
+00008A 0012           00101                 RETURN
+                      00102 
+                      00103                 ;°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°
+                      00104 ;       ------------------------
+Warning[207]: Found label after column 1. (Llamar_Cortina)
+00008C                00105         Llamar_Cortina:
+00008C EC?? F???      00106                 CALL    Cortina
+000090 0012           00107                 RETURN
+Warning[207]: Found label after column 1. (Llamar_Ola)
+000092                00108         Llamar_Ola:
+000092 EC?? F???      00109                 CALL    Ola
+000096 0012           00110                 RETURN
+Warning[207]: Found label after column 1. (Llamar_Policia)
+000098                00111         Llamar_Policia:
+000098 EC?? F???      00112                 CALL    Luces_Policia
+00009C 0012           00113                 RETURN
+                      00114 ; --------------------------
+Warning[207]: Found label after column 1. (Opc_fuera)
+00009E                00115         Opc_fuera:
+                      00116                 ;°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°
+                      00117                 ; PARA n estados cambiar el valor n+1 (para 6 estados cambiar el 4 por 7)
+                      00118                 ;°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° 
+00009E 2A07           00119                 INCF    B_Estados, 1
+0000A0 0E04           00120                 MOVLW   d'4'        ; No hay opc 4, hacer que sea 1
+0000A2 5C07           00121                 SUBWF   B_Estados, W; compara estado del boton y con w=1 (estado1)
+0000A4 A4D8           00122                 BTFSS   STATUS, Z
+0000A6 EF?? F???      00123                 GOTO    Repetir_Estado
+                      00124 
+Warning[207]: Found label after column 1. (opcion1)
+0000AA                00125         opcion1:
+0000AA 0E01           00126                 MOVLW   d'1'
+0000AC 6E07           00127                 MOVWF   B_Estados
+Warning[207]: Found label after column 1. (Repetir_Estado)
+0000AE                00128         Repetir_Estado:
+0000AE EC?? F???      00129                 CALL    Opcion_sec
+                      00130                 
+MPASM  5.51                        CODIGO.ASM   5-7-2026  10:29:12         PAGE  4
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-                      00142 
-                      00143 ;=================================================
-                      00144 ; SECUENCIAS (Con RETURN para no desbordar memoria)
-                      00145 ;=================================================
-                      00146 ; RETURN en lugar de GOTO para no dañar la Pila (Stack)
-                      00147 
-                      00148 ;--- SQ1: CORTINA ---
-0000C6                00149 SQ1_Cortina:
-0000C6 AA82           00150         BTFSS   PORTC, 5
-0000C8 0012           00151         RETURN
-0000CA A882           00152         BTFSS   PORTC, 4
-0000CC 0012           00153         RETURN
-                      00154 
-0000CE 5006           00155         MOVF    NH, W
-0000D0 1007           00156         IORWF   NL, W
-0000D2 6E8C           00157         MOVWF   LATD
-0000D4 0E32           00158         MOVLW   d'50'
-0000D6 EC?? F???      00159         CALL    DelayXms
-                      00160         
-0000DA 4206           00161         RRNCF   NH, 1
-0000DC 4607           00162         RLNCF   NL, 1
-0000DE A006           00163         BTFSS   NH, 0
-0000E0 EF?? F???      00164         GOTO    Sigue_Cortina
-0000E4 EF?? F???      00165         GOTO    Rota_Cortina
-0000E8                00166 Sigue_Cortina:   
-0000E8 A606           00167         BTFSS   NH, 3
-0000EA EF?? F???      00168         GOTO    SQ1_Cortina
-0000EE                00169 Rota_Cortina:
-0000EE 4206           00170         RRNCF   NH, 1
-0000F0 4607           00171         RLNCF   NL, 1
-0000F2 EF?? F???      00172         GOTO    SQ1_Cortina
+0000B2 AA82           00131                 BTFSS   PORTC, 5
+0000B4 EF?? F???      00132                 GOTO    Apagar_Todo
+0000B8 A882           00133                 BTFSS   PORTC, 4
+0000BA EF?? F???      00134                 GOTO    Boton_secuencias
+0000BE EF?? F???      00135                 GOTO    Repetir_Estado
+                      00136 
+                      00137         ;******* BUCLE CORTINA ********
+Warning[207]: Found label after column 1. (Cortina)
+0000C2                00138         Cortina:
+0000C2 0E80           00139                 MOVLW   b'10000000'
+0000C4 6E04           00140                 MOVWF   NH
+0000C6 0E01           00141                 MOVLW   b'00000001'
+0000C8 6E05           00142                 MOVWF   NL
+                      00143 
+Warning[207]: Found label after column 1. (Bucle_Cortina)
+0000CA                00144         Bucle_Cortina:
+                      00145                 ; --- Boton Apagar Todo (S3) ---
+0000CA AA82           00146             BTFSS   PORTC, 5        
+0000CC 0012           00147             RETURN
+0000CE A882           00148                 BTFSS   PORTC, 4
+0000D0 0012           00149                 RETURN
+                      00150 
+0000D2 5004           00151                 MOVF    NH, W
+0000D4 1005           00152                 IORWF   NL, W
+0000D6 6E8C           00153                 MOVWF   LATD
+                      00154                 
+0000D8 0E32           00155                 MOVLW   d'50'
+0000DA EC?? F???      00156                 CALL    DelayXms
+                      00157                 
+0000DE 4204           00158                 RRNCF   NH, 1
+0000E0 4605           00159                 RLNCF   NL, 1
+0000E2 A004           00160                 BTFSS   NH, 0
+0000E4 EF?? F???      00161                 GOTO    Sigue
+0000E8 EF?? F???      00162                 GOTO    Rota1
+                      00163 
+Warning[207]: Found label after column 1. (Sigue)
+0000EC                00164         Sigue:   
+                      00165         ; sirve para cuando hace el efecto espejo no se haga 2 veces
+0000EC A604           00166                 BTFSS   NH, 3
+0000EE EF?? F???      00167                 GOTO    Bucle_Cortina
+                      00168         
+Warning[207]: Found label after column 1. (Rota1)
+0000F2                00169         Rota1:
+0000F2 4204           00170                 RRNCF   NH, 1
+0000F4 4605           00171                 RLNCF   NL, 1
+0000F6 EF?? F???      00172                 GOTO    Bucle_Cortina
                       00173 
-                      00174 ;--- SQ2: LA OLA ---
-0000F6                00175 SQ2_Ola:
-0000F6 0E01           00176         MOVLW   b'00000001'
-0000F8 6E8C           00177         MOVWF   LATD
-0000FA                00178 Ola_Hacia_Izq:
-0000FA 0E32           00179         MOVLW   d'50'
-0000FC EC?? F???      00180         CALL    DelayXms
-000100 AA82           00181         BTFSS   PORTC, 5
-000102 0012           00182         RETURN                  ; Devuelve control a 'Rep'
-000104 A882           00183         BTFSS   PORTC, 4
-000106 0012           00184         RETURN                  ; Devuelve control a 'Rep'
-                      00185 
-000108 468C           00186         RLNCF   LATD, 1
-00010A AE8C           00187         BTFSS   LATD, 7
-00010C EF?? F???      00188         GOTO    Ola_Hacia_Izq
-                      00189         
-000110                00190 Ola_Hacia_Der:
-000110 0E32           00191         MOVLW   d'50'
-000112 EC?? F???      00192         CALL    DelayXms
-000116 AA82           00193         BTFSS   PORTC, 5
-000118 0012           00194         RETURN
-MPASM  5.51                        CODIGO.ASM   5-5-2026  1:26:56         PAGE  5
+                      00174         ;******** OLA ***********
+Warning[207]: Found label after column 1. (Ola)
+0000FA                00175         Ola:
+0000FA 0E01           00176                 MOVLW   b'00000001'     ; LED izq ON (rojos)
+0000FC 6E8C           00177                 MOVWF   LATD
+Warning[207]: Found label after column 1. (Ola_Hacia_Izq)
+MPASM  5.51                        CODIGO.ASM   5-7-2026  10:29:12         PAGE  5
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-00011A A882           00195         BTFSS   PORTC, 4
-00011C 0012           00196         RETURN
-                      00197 
-00011E 428C           00198         RRNCF   LATD, 1
-000120 A08C           00199         BTFSS   LATD, 0
-000122 EF?? F???      00200         GOTO    Ola_Hacia_Der
-000126 EF?? F???      00201         GOTO    SQ2_Ola
-                      00202 
-                      00203 ;--- SQ3: SIRENA POLICIAL ---
-00012A                00204 SQ3_Sirena:
-00012A 0E03           00205         MOVLW   d'3'
-00012C 6E05           00206         MOVWF   ContaCiclos
-00012E                00207 Leds_Rojos:
-00012E 0E0F           00208         MOVLW   b'00001111'
-000130 6E8C           00209         MOVWF   LATD
-000132 0E32           00210         MOVLW   d'50'
-000134 EC?? F???      00211         CALL    DelayXms
-                      00212         
-000138 AA82           00213         BTFSS   PORTC, 5
-00013A 0012           00214         RETURN
-00013C A882           00215         BTFSS   PORTC, 4
-00013E 0012           00216         RETURN
-                      00217 
-000140 6A8C           00218         CLRF    LATD
-000142 0E32           00219         MOVLW   d'50'
-000144 EC?? F???      00220         CALL    DelayXms
-000148 2E05           00221         DECFSZ  ContaCiclos, 1
-00014A EF?? F???      00222         GOTO    Leds_Rojos
-                      00223 
-00014E 0E03           00224         MOVLW   d'3'
-000150 6E05           00225         MOVWF   ContaCiclos
-000152                00226 Leds_Azules:
-000152 0EF0           00227         MOVLW   b'11110000'
-000154 6E8C           00228         MOVWF   LATD
-000156 0E32           00229         MOVLW   d'50'
-000158 EC?? F???      00230         CALL    DelayXms
-                      00231         
-00015C AA82           00232         BTFSS   PORTC, 5
-00015E 0012           00233         RETURN
-000160 A882           00234         BTFSS   PORTC, 4
-000162 0012           00235         RETURN
-                      00236 
-000164 6A8C           00237         CLRF    LATD
-000166 0E32           00238         MOVLW   d'50'
-000168 EC?? F???      00239         CALL    DelayXms
-00016C 2E05           00240         DECFSZ  ContaCiclos, 1
-00016E EF?? F???      00241         GOTO    Leds_Azules
-000172 EF?? F???      00242         GOTO    SQ3_Sirena
-                      00243 
-                      00244 ;++++++ DELAY DE X[ms] +++++++++++++++++++
-                      00245 ;Deberia llamar a Delay1ms, Xveces
-000176                00246 DelayXms:
-000176 6E02           00247         MOVWF   Xveces
-MPASM  5.51                        CODIGO.ASM   5-5-2026  1:26:56         PAGE  6
+0000FE                00178         Ola_Hacia_Izq:
+0000FE 0E32           00179                 MOVLW   d'50'
+000100 EC?? F???      00180                 CALL    DelayXms
+                      00181         
+000104 AA82           00182                 BTFSS   PORTC, 5                ; verificar boton s3
+000106 0012           00183                 RETURN
+000108 A882           00184                 BTFSS   PORTC, 4
+00010A 0012           00185                 RETURN
+                      00186         
+00010C 468C           00187                 RLNCF   LATD, 1         ; Rota la luz a la izquierda
+00010E AE8C           00188                 BTFSS   LATD, 7         ; 10000000 (bit 7 en 1)
+000110 EF?? F???      00189                 GOTO    Ola_Hacia_Izq   ;
+                      00190                 
+Warning[207]: Found label after column 1. (Ola_Hacia_Der)
+000114                00191         Ola_Hacia_Der:
+000114 0E32           00192                 MOVLW   d'50'
+000116 EC?? F???      00193                 CALL    DelayXms
+                      00194                 
+00011A AA82           00195                 BTFSS   PORTC, 5        ; verificar boton s3
+00011C 0012           00196                 RETURN
+00011E A882           00197                 BTFSS   PORTC, 4
+000120 0012           00198                 RETURN
+                      00199         
+000122 428C           00200                 RRNCF   LATD, 1         ; Rota la luz a la derecha
+000124 A08C           00201                 BTFSS   LATD, 0         ; 00000001  (bit 0 es 1)
+000126 EF?? F???      00202                 GOTO    Ola_Hacia_Der   
+                      00203                 
+00012A EF?? F???      00204                 GOTO    Ola         ; Repite la Ola
+                      00205 
+                      00206         ;******* Luces Policia ***********
+Warning[207]: Found label after column 1. (Luces_Policia)
+00012E                00207         Luces_Policia:
+                      00208                 ; 3 Parpadeos Rojos (Izquierda)
+00012E 0E03           00209                 MOVLW   d'3'
+000130 6E08           00210                 MOVWF   ContaCiclos
+Warning[207]: Found label after column 1. (Rojos_Parpadean)
+000132                00211         Rojos_Parpadean:
+000132 0E0F           00212                 MOVLW   b'00001111'
+000134 6E8C           00213                 MOVWF   LATD
+000136 0E32           00214                 MOVLW   d'50'
+000138 EC?? F???      00215                 CALL    DelayXms
+                      00216                 
+00013C AA82           00217                 BTFSS   PORTC, 5        ; Boton s3
+00013E 0012           00218                 RETURN
+000140 A882           00219                 BTFSS   PORTC, 4
+000142 0012           00220                 RETURN
+                      00221         
+000144 6A8C           00222                 CLRF    LATD            ; Apaga Leds
+000146 0E32           00223                 MOVLW   d'50'
+000148 EC?? F???      00224                 CALL    DelayXms
+00014C 2E08           00225                 DECFSZ  ContaCiclos, 1  ; resta al contador
+00014E EF?? F???      00226                 GOTO    Rojos_Parpadean
+                      00227         
+MPASM  5.51                        CODIGO.ASM   5-7-2026  10:29:12         PAGE  6
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-000178                00248 bucleVeces:
-000178 EC?? F???      00249         CALL    Delay1ms
-00017C 2E02           00250         DECFSZ  Xveces, 1
-00017E EF?? F???      00251         GOTO    bucleVeces
-000182 0012           00252         return
-                      00253 ;+++++++++++++++++++++++++++++++++++++++        
-                      00254                 
-                      00255 ;++++++ DELAY DE 100MS +++++++++++++++++++
-000184                00256 Delay1ms:   
-000184 2E01           00257         DECFSZ  Contador2, 1
-000186 EF?? F???      00258         GOTO    bucle1  
-00018A EF?? F???      00259         GOTO    salir
-00018E                00260 bucle1:     
-00018E 2E00           00261         DECFSZ  Contador1, 1
-000190 EF?? F???      00262         GOTO    bucle1
-000194 0EC6           00263         MOVLW   d'198'          ;W = 198
-000196 6E00           00264         MOVWF   Contador1       ;Contador1 = 198
-000198 EF?? F???      00265         GOTO    Delay1ms
-00019C                00266 salir:
-00019C 0E15           00267         MOVLW   d'21'           ;W = 21
-00019E 6E01           00268         MOVWF   Contador2       ;Contador2 = 10
-0001A0 0012           00269         return
-                      00270 ;+++++++++++++++++++++++++++++++++++++++        
-Warning[205]: Found directive in column 1. (end)
-                      00271 end
-MPASM  5.51                        CODIGO.ASM   5-5-2026  1:26:56         PAGE  7
+                      00228                 ; 3 Parpadeos Azules (Derecha)
+000152 0E03           00229                 MOVLW   d'3'
+000154 6E08           00230                 MOVWF   ContaCiclos
+Warning[207]: Found label after column 1. (Azules_Parpadean)
+000156                00231         Azules_Parpadean:
+000156 0EF0           00232                 MOVLW   b'11110000'
+000158 6E8C           00233                 MOVWF   LATD
+00015A 0E32           00234                 MOVLW   d'50'
+00015C EC?? F???      00235                 CALL    DelayXms
+                      00236                 
+000160 AA82           00237                 BTFSS   PORTC, 5        ; Boton s3
+000162 0012           00238                 RETURN
+000164 A882           00239                 BTFSS   PORTC, 4
+000166 0012           00240                 RETURN
+                      00241         
+000168 6A8C           00242                 CLRF    LATD            ; Apaga Leds
+00016A 0E32           00243                 MOVLW   d'50'
+00016C EC?? F???      00244                 CALL    DelayXms
+000170 2E08           00245                 DECFSZ  ContaCiclos, 1
+000172 EF?? F???      00246                 GOTO    Azules_Parpadean
+                      00247                 
+000176 EF?? F???      00248                 GOTO    Luces_Policia
+                      00249         ;°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°
+                      00250 
+                      00251 ; ===============================================================
+Warning[207]: Found label after column 1. (Apagar_Todo)
+00017A                00252         Apagar_Todo: 
+00017A 6A8C           00253             CLRF    LATD            ; Apaga todos los LEDs del puerto RD
+00017C 6A07           00254                 CLRF    B_Estados
+                      00255 ; -------------------------------
+Warning[207]: Found label after column 1. (Boton_S3)
+00017E                00256         Boton_S3:
+00017E AA82           00257             BTFSS   PORTC, 5
+000180 EF?? F???      00258             GOTO    Boton_S3
+000184 EC?? F???      00259                 CALL    Delay100ms     ; controla el estado transistorio
+000188 EF?? F???      00260         GOTO    EncuestaON      
+                      00261         
+                      00262         ;++++++ DELAY DE X[ms] +++++++++++++++++++
+                      00263         ;Deberia llamar a Delay1ms, Xveces
+Warning[207]: Found label after column 1. (DelayXms)
+00018C                00264         DelayXms:
+00018C 6E03           00265                 MOVWF   Xveces
+Warning[207]: Found label after column 1. (bucleVeces)
+00018E                00266         bucleVeces:
+00018E EC?? F???      00267                 CALL    Delay1ms
+000192 2E03           00268                 DECFSZ  Xveces,1
+000194 EF?? F???      00269                 GOTO    bucleVeces
+                      00270         
+000198 0012           00271                 return
+                      00272         ;+++++++++++++++++++++++++++++++++++++++        
+                      00273                 
+                      00274         ;++++++ DELAY DE 100MS +++++++++++++++++++
+Warning[207]: Found label after column 1. (Delay100ms)
+MPASM  5.51                        CODIGO.ASM   5-7-2026  10:29:12         PAGE  7
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+00019A                00275         Delay100ms:
+00019A EC?? F???      00276                 CALL    Delay1ms
+00019E 2E02           00277                 DECFSZ  ContaDelay100,1
+0001A0 EF?? F???      00278                 GOTO    Delay100ms
+                      00279                 ;Reinicio ContaDelay100 = 100
+0001A4 0E64           00280                 MOVLW   d'100'  ;W=100
+0001A6 6E02           00281                 MOVWF   ContaDelay100
+                      00282         
+0001A8 0012           00283                 return
+                      00284         ;+++++++++++++++++++++++++++++++++++++++        
+                      00285         ;++++++ DELAY DE 1MS +++++++++++++++++++
+Warning[207]: Found label after column 1. (Delay1ms)
+0001AA                00286         Delay1ms:       
+0001AA 2E01           00287                 DECFSZ  Contador2,1
+0001AC EF?? F???      00288                 GOTO    bucle1  
+0001B0 EF?? F???      00289                 GOTO    salir
+Warning[207]: Found label after column 1. (bucle1)
+0001B4                00290         bucle1:         
+0001B4 2E00           00291                 DECFSZ  Contador1,1
+0001B6 EF?? F???      00292                 GOTO    bucle1
+                      00293                 
+0001BA 0EC6           00294                 MOVLW   d'198'          ;W = 198
+0001BC 6E00           00295                 MOVWF   Contador1       ;Contador1 = 198
+0001BE EF?? F???      00296                 GOTO    Delay1ms
+Warning[207]: Found label after column 1. (salir)
+0001C2                00297         salir:
+0001C2 0E15           00298                 MOVLW   d'21'           ;W = 21
+0001C4 6E01           00299                 MOVWF   Contador2       ;Contador2 = 10
+0001C6 0012           00300                 return
+                      00301         ;+++++++++++++++++++++++++++++++++++++++        
+                      00302         end
+MPASM  5.51                        CODIGO.ASM   5-7-2026  10:29:12         PAGE  8
 
 
 SYMBOL TABLE
@@ -370,7 +435,8 @@ AN1                               00000001
 AN2                               00000002
 AN3                               00000003
 AN4                               00000005
-AntRet                            0000005A
+Apagar_Todo                       0000017A
+Azules_Parpadean                  00000156
 BANKED                            00000001
 BAUDCON                           00000FB8
 BAUDCTL                           00000FB8
@@ -382,18 +448,22 @@ BGST                              00000005
 BOR                               00000000
 BRG16                             00000003
 BRGH                              00000002
-BSR                               00000FE0
-MPASM  5.51                        CODIGO.ASM   5-5-2026  1:26:56         PAGE  8
+MPASM  5.51                        CODIGO.ASM   5-7-2026  10:29:12         PAGE  9
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+BSR                               00000FE0
 BTOEE                             00000004
 BTOEF                             00000004
 BTSEE                             00000007
 BTSEF                             00000007
-BucleInicio                       00000038
+B_Estados                         00000007
+Boton_S3                          0000017E
+Boton_secuencias                  0000005E
+BucleInicio                       0000003C
+Bucle_Cortina                     000000CA
 C                                 00000000
 C1INV                             00000004
 C1OUT                             00000006
@@ -437,17 +507,17 @@ CKE                               00000006
 CKP                               00000004
 CLK1EN                            00000004
 CLKCFG0                           00000006
-CLKCFG1                           00000007
-CM0                               00000000
-CM1                               00000001
-CM2                               00000002
-CMCON                             00000FB4
-MPASM  5.51                        CODIGO.ASM   5-5-2026  1:26:56         PAGE  9
+MPASM  5.51                        CODIGO.ASM   5-7-2026  10:29:12         PAGE 10
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+CLKCFG1                           00000007
+CM0                               00000000
+CM1                               00000001
+CM2                               00000002
+CMCON                             00000FB4
 CMIE                              00000006
 CMIF                              00000006
 CMIP                              00000006
@@ -468,10 +538,12 @@ CVREN                             00000007
 CVROE                             00000006
 CVRR                              00000005
 CVRSS                             00000004
-ContaCiclos                       00000005
+ContaCiclos                       00000008
+ContaDelay100                     00000002
 Contador1                         00000000
 Contador2                         00000001
-ContadorInicio                    00000003
+ContadorInicio                    00000006
+Cortina                           000000C2
 D                                 00000005
 DATA_ADDRESS                      00000005
 DC                                00000001
@@ -490,9 +562,16 @@ DIR                               00000002
 DONE                              00000001
 D_A                               00000005
 D_NOT_A                           00000005
-Delay1ms                          00000184
-DelayXms                          00000176
+Delay100ms                        0000019A
+Delay1ms                          000001AA
+DelayXms                          0000018C
 ECCP1AS                           00000FB6
+MPASM  5.51                        CODIGO.ASM   5-7-2026  10:29:12         PAGE 11
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
 ECCP1CON                          00000FBD
 ECCP1DEL                          00000FB7
 ECCPAS0                           00000004
@@ -501,20 +580,12 @@ ECCPAS2                           00000006
 ECCPASE                           00000007
 EEADR                             00000FA9
 EECON1                            00000FA6
-MPASM  5.51                        CODIGO.ASM   5-5-2026  1:26:56         PAGE 10
-
-
-SYMBOL TABLE
-  LABEL                             VALUE 
-
 EECON2                            00000FA7
 EEDATA                            00000FA8
 EEIE                              00000004
 EEIF                              00000004
 EEIP                              00000004
 EEPGD                             00000007
-ENC1                              00000054
-ENC2                              00000080
 ENDP0                             00000003
 ENDP1                             00000004
 ENDP2                             00000005
@@ -524,9 +595,7 @@ EPHSHK                            00000004
 EPINEN                            00000001
 EPOUTEN                           00000002
 EPSTALL                           00000000
-Esp_S3                            00000084
-EstadoSec                         00000004
-Estado_0                          00000050
+EncuestaON                        00000054
 FAST                              00000001
 FERR                              00000002
 FLTS                              00000002
@@ -556,16 +625,16 @@ GCEN                              00000007
 GIE                               00000007
 GIEH                              00000007
 GIEL                              00000006
-GIE_GIEH                          00000007
-GO                                00000001
-GO_DONE                           00000001
-GO_NOT_DONE                       00000001
-MPASM  5.51                        CODIGO.ASM   5-5-2026  1:26:56         PAGE 11
+MPASM  5.51                        CODIGO.ASM   5-7-2026  10:29:12         PAGE 12
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+GIE_GIEH                          00000007
+GO                                00000001
+GO_DONE                           00000001
+GO_NOT_DONE                       00000001
 HLVDCON                           00000FD2
 HLVDEN                            00000004
 HLVDIE                            00000002
@@ -615,16 +684,16 @@ INTSRC                            00000007
 IOFS                              00000002
 IPEN                              00000007
 IPR1                              00000F9F
-IPR2                              00000FA2
-IRCF0                             00000004
-IRCF1                             00000005
-IRCF2                             00000006
-MPASM  5.51                        CODIGO.ASM   5-5-2026  1:26:56         PAGE 12
+MPASM  5.51                        CODIGO.ASM   5-7-2026  10:29:12         PAGE 13
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+IPR2                              00000FA2
+IRCF0                             00000004
+IRCF1                             00000005
+IRCF2                             00000006
 IRVST                             00000005
 IVRST                             00000005
 Inicio                            00000020
@@ -674,21 +743,23 @@ LVDL0                             00000000
 LVDL1                             00000001
 LVDL2                             00000002
 LVDL3                             00000003
-LVV0                              00000000
-LVV1                              00000001
-LVV2                              00000002
-LVV3                              00000003
-MPASM  5.51                        CODIGO.ASM   5-5-2026  1:26:56         PAGE 13
+MPASM  5.51                        CODIGO.ASM   5-7-2026  10:29:12         PAGE 14
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
-Leds_Azules                       00000152
-Leds_Rojos                        0000012E
+LVV0                              00000000
+LVV1                              00000001
+LVV2                              00000002
+LVV3                              00000003
+Llamar_Cortina                    0000008C
+Llamar_Ola                        00000092
+Llamar_Policia                    00000098
+Luces_Policia                     0000012E
 N                                 00000004
-NH                                00000006
-NL                                00000007
+NH                                00000004
+NL                                00000005
 NOT_A                             00000005
 NOT_ADDRESS                       00000005
 NOT_BOR                           00000000
@@ -713,8 +784,11 @@ OSCFIP                            00000007
 OSCTUNE                           00000F9B
 OSTS                              00000003
 OV                                00000003
-Ola_Hacia_Der                     00000110
-Ola_Hacia_Izq                     000000FA
+Ola                               000000FA
+Ola_Hacia_Der                     00000114
+Ola_Hacia_Izq                     000000FE
+Opc_fuera                         0000009E
+Opcion_sec                        0000006C
 P                                 00000004
 P1A                               00000002
 P1M0                              00000006
@@ -728,6 +802,12 @@ PCL                               00000FF9
 PCLATH                            00000FFA
 PCLATU                            00000FFB
 PD                                00000002
+MPASM  5.51                        CODIGO.ASM   5-7-2026  10:29:12         PAGE 15
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
 PDC0                              00000000
 PDC1                              00000001
 PDC2                              00000002
@@ -737,12 +817,6 @@ PDC5                              00000005
 PDC6                              00000006
 PEIE                              00000006
 PEIE_GIEL                         00000006
-MPASM  5.51                        CODIGO.ASM   5-5-2026  1:26:56         PAGE 14
-
-
-SYMBOL TABLE
-  LABEL                             VALUE 
-
 PEN                               00000002
 PGC                               00000006
 PGD                               00000007
@@ -786,22 +860,19 @@ PSSAC0                            00000002
 PSSAC1                            00000003
 PSSBD0                            00000000
 PSSBD1                            00000001
-Pregestado2                       000000B0
-Pregestado3                       000000C0
-Pregestados                       000000A0
 R                                 00000002
+MPASM  5.51                        CODIGO.ASM   5-7-2026  10:29:12         PAGE 16
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
 RA0                               00000000
 RA1                               00000001
 RA2                               00000002
 RA3                               00000003
 RA4                               00000004
 RA5                               00000005
-MPASM  5.51                        CODIGO.ASM   5-5-2026  1:26:56         PAGE 15
-
-
-SYMBOL TABLE
-  LABEL                             VALUE 
-
 RA6                               00000006
 RB0                               00000000
 RB1                               00000001
@@ -849,22 +920,23 @@ RE2                               00000002
 RE3                               00000003
 READ_WRITE                        00000002
 RESUME                            00000002
+MPASM  5.51                        CODIGO.ASM   5-7-2026  10:29:12         PAGE 17
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
 RI                                00000004
 RSEN                              00000001
 RX                                00000007
 RX9                               00000006
 RX9D                              00000000
 RXDTP                             00000005
-MPASM  5.51                        CODIGO.ASM   5-5-2026  1:26:56         PAGE 16
-
-
-SYMBOL TABLE
-  LABEL                             VALUE 
-
 R_NOT_W                           00000002
 R_W                               00000002
-Rep                               0000006C
-Rota_Cortina                      000000EE
+Repetir_Estado                    000000AE
+Rojos_Parpadean                   00000132
+Rota1                             000000F2
 S                                 00000003
 SBOREN                            00000006
 SCKP                              00000004
@@ -897,9 +969,6 @@ SPPIE                             00000007
 SPPIF                             00000007
 SPPIP                             00000007
 SPPOWN                            00000001
-SQ1_Cortina                       000000C6
-SQ2_Ola                           000000F6
-SQ3_Sirena                        0000012A
 SREN                              00000005
 SSPADD                            00000FC8
 SSPBUF                            00000FC9
@@ -910,16 +979,16 @@ SSPIE                             00000003
 SSPIF                             00000003
 SSPIP                             00000003
 SSPM0                             00000000
-SSPM1                             00000001
-SSPM2                             00000002
-SSPM3                             00000003
-SSPOV                             00000006
-MPASM  5.51                        CODIGO.ASM   5-5-2026  1:26:56         PAGE 17
+MPASM  5.51                        CODIGO.ASM   5-7-2026  10:29:12         PAGE 18
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+SSPM1                             00000001
+SSPM2                             00000002
+SSPM3                             00000003
+SSPOV                             00000006
 SSPSTAT                           00000FC7
 STALLIE                           00000005
 STALLIF                           00000005
@@ -937,8 +1006,7 @@ SUSPND                            00000001
 SWDTE                             00000000
 SWDTEN                            00000000
 SYNC                              00000004
-SecuenciaX                        0000008E
-Sigue_Cortina                     000000E8
+Sigue                             000000EC
 T08BIT                            00000006
 T0CKI                             00000004
 T0CON                             00000FD5
@@ -970,15 +1038,15 @@ T3CCP1                            00000003
 T3CCP2                            00000006
 T3CKPS0                           00000004
 T3CKPS1                           00000005
-T3CON                             00000FB1
-T3NSYNC                           00000002
-T3SYNC                            00000002
-MPASM  5.51                        CODIGO.ASM   5-5-2026  1:26:56         PAGE 18
+MPASM  5.51                        CODIGO.ASM   5-7-2026  10:29:12         PAGE 19
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+T3CON                             00000FB1
+T3NSYNC                           00000002
+T3SYNC                            00000002
 TABLAT                            00000FF5
 TBLPTR                            00000FF6
 TBLPTRH                           00000FF7
@@ -1029,15 +1097,15 @@ TRISA3                            00000003
 TRISA4                            00000004
 TRISA5                            00000005
 TRISA6                            00000006
-TRISB                             00000F93
-TRISB0                            00000000
-TRISB1                            00000001
-MPASM  5.51                        CODIGO.ASM   5-5-2026  1:26:56         PAGE 19
+MPASM  5.51                        CODIGO.ASM   5-7-2026  10:29:12         PAGE 20
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+TRISB                             00000F93
+TRISB0                            00000000
+TRISB1                            00000001
 TRISB2                            00000002
 TRISB3                            00000003
 TRISB4                            00000004
@@ -1088,15 +1156,15 @@ UCON                              00000F6D
 UEIE                              00000F6B
 UEIR                              00000F6A
 UEP0                              00000F70
-UEP1                              00000F71
-UEP10                             00000F7A
-UEP11                             00000F7B
-MPASM  5.51                        CODIGO.ASM   5-5-2026  1:26:56         PAGE 20
+MPASM  5.51                        CODIGO.ASM   5-7-2026  10:29:12         PAGE 21
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+UEP1                              00000F71
+UEP10                             00000F7A
+UEP11                             00000F7B
 UEP12                             00000F7C
 UEP13                             00000F7D
 UEP14                             00000F7E
@@ -1145,17 +1213,17 @@ WS1                               00000001
 WS2                               00000002
 WS3                               00000003
 WUE                               00000001
-Xveces                            00000002
+Xveces                            00000003
 Z                                 00000002
-_BORV_0_2L                        000000E7
-_BORV_1_2L                        000000EF
-_BORV_2_2L                        000000F7
-MPASM  5.51                        CODIGO.ASM   5-5-2026  1:26:56         PAGE 21
+MPASM  5.51                        CODIGO.ASM   5-7-2026  10:29:12         PAGE 22
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+_BORV_0_2L                        000000E7
+_BORV_1_2L                        000000EF
+_BORV_2_2L                        000000F7
 _BORV_3_2L                        000000FF
 _BOR_OFF_2L                       000000F9
 _BOR_ON_2L                        000000FF
@@ -1206,15 +1274,15 @@ _EBTR3_ON_7L                      000000F7
 _EBTRB_OFF_7H                     000000FF
 _EBTRB_ON_7H                      000000BF
 _FCMEN_OFF_1H                     000000BF
-_FCMEN_ON_1H                      000000FF
-_FOSC_ECIO_EC_1H                  000000F4
-_FOSC_ECPLLIO_EC_1H               000000F6
-MPASM  5.51                        CODIGO.ASM   5-5-2026  1:26:56         PAGE 22
+MPASM  5.51                        CODIGO.ASM   5-7-2026  10:29:12         PAGE 23
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+_FCMEN_ON_1H                      000000FF
+_FOSC_ECIO_EC_1H                  000000F4
+_FOSC_ECPLLIO_EC_1H               000000F6
 _FOSC_ECPLL_EC_1H                 000000F7
 _FOSC_EC_EC_1H                    000000F5
 _FOSC_HSPLL_HS_1H                 000000FE
@@ -1265,15 +1333,15 @@ _WDTPS_1024_2H                    000000F5
 _WDTPS_128_2H                     000000EF
 _WDTPS_16384_2H                   000000FD
 _WDTPS_16_2H                      000000E9
-_WDTPS_1_2H                       000000E1
-_WDTPS_2048_2H                    000000F7
-_WDTPS_256_2H                     000000F1
-MPASM  5.51                        CODIGO.ASM   5-5-2026  1:26:56         PAGE 23
+MPASM  5.51                        CODIGO.ASM   5-7-2026  10:29:12         PAGE 24
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+_WDTPS_1_2H                       000000E1
+_WDTPS_2048_2H                    000000F7
+_WDTPS_256_2H                     000000F1
 _WDTPS_2_2H                       000000E3
 _WDTPS_32768_2H                   000000FF
 _WDTPS_32_2H                      000000EB
@@ -1302,13 +1370,13 @@ _WRTD_ON_6H                       0000007F
 _XINST_OFF_4L                     000000BF
 _XINST_ON_4L                      000000FF
 __18F4550                         00000001
-__DEBUG                           1
-bucle1                            0000018E
-bucleVeces                        00000178
-salir                             0000019C
+bucle1                            000001B4
+bucleVeces                        0000018E
+opcion1                           000000AA
+salir                             000001C2
 
 Errors   :     0
-Warnings :    10 reported,     0 suppressed
+Warnings :    38 reported,     0 suppressed
 Messages :     0 reported,     0 suppressed
 
 

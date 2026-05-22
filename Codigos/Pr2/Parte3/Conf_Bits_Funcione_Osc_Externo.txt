@@ -1,0 +1,13 @@
+Para que tu microcontrolador trabaje con los 20 MHz puros de tu cristal externo y tu código original de d'30' funcione a la perfección, solo debes cambiar una configuración en esa ventana.
+
+El cambio exacto que debes hacer:
+Busca la fila que dice FOSC (está en la dirección 300001).
+
+Lo que tienes ahora: HS oscillator, PLL enabled (HSPLL)
+
+Lo que debes seleccionar: Haz clic en esa celda desplegable y cámbialo a HS oscillator (HS) (o simplemente HS).
+
+¿Por qué funciona esto?
+Al quitarle la parte que dice "PLL enabled", estás apagando el multiplicador interno de 48 MHz.
+
+Además, si te fijas en la fila de arriba (CPUDIV), la configuración actual dice [Primary Oscillator Src: /1]. Esto es perfecto, ya que significa que tomará tus 20 MHz del cristal, los dividirá para 1, y el núcleo del procesador recibirá exactamente 20 MHz.

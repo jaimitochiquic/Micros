@@ -1,0 +1,68 @@
+MPLINK 4.49, Linker
+Linker Map File - Created Thu May 21 11:11:01 2026
+
+                                 Section Info
+                  Section       Type    Address   Location Size(Bytes)
+                ---------  ---------  ---------  ---------  ---------
+                   .org_0       code   0x000000    program   0x000004
+                   .cinit    romdata   0x000004    program   0x000002
+                   .org_1       code   0x000008    program   0x000004
+                   .org_2       code   0x000020    program   0x000104
+
+
+
+                              Program Memory Usage 
+                               Start         End      
+                           ---------   ---------      
+                            0x000000    0x000005      
+                            0x000008    0x00000b      
+                            0x000020    0x000123      
+            270 out of 33048 program addresses used, program memory utilization is 0%
+
+
+
+                              Symbols - Sorted by Name
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+               Boton_S3_D   0x0000ba    program     static C:\Users\UsuarioF\Desktop\CLASES\6 Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr2\Parte2\Codigo.asm
+              BucleInicio   0x00005a    program     static C:\Users\UsuarioF\Desktop\CLASES\6 Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr2\Parte2\Codigo.asm
+             Continuar_s2   0x0000ca    program     static C:\Users\UsuarioF\Desktop\CLASES\6 Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr2\Parte2\Codigo.asm
+               Delay100ms   0x0000e8    program     static C:\Users\UsuarioF\Desktop\CLASES\6 Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr2\Parte2\Codigo.asm
+                 Delay1ms   0x0000f8    program     static C:\Users\UsuarioF\Desktop\CLASES\6 Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr2\Parte2\Codigo.asm
+                 DelayXms   0x0000da    program     static C:\Users\UsuarioF\Desktop\CLASES\6 Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr2\Parte2\Codigo.asm
+        Detener_Secuencia   0x0000b6    program     static C:\Users\UsuarioF\Desktop\CLASES\6 Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr2\Parte2\Codigo.asm
+               EncuestaON   0x000072    program     static C:\Users\UsuarioF\Desktop\CLASES\6 Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr2\Parte2\Codigo.asm
+         Est_transistorio   0x00007c    program     static C:\Users\UsuarioF\Desktop\CLASES\6 Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr2\Parte2\Codigo.asm
+                   Inicio   0x000020    program     static C:\Users\UsuarioF\Desktop\CLASES\6 Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr2\Parte2\Codigo.asm
+           InterrupcionHP   0x000116    program     static C:\Users\UsuarioF\Desktop\CLASES\6 Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr2\Parte2\Codigo.asm
+            Ola_Hacia_Der   0x00009c    program     static C:\Users\UsuarioF\Desktop\CLASES\6 Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr2\Parte2\Codigo.asm
+            Ola_Hacia_Izq   0x000086    program     static C:\Users\UsuarioF\Desktop\CLASES\6 Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr2\Parte2\Codigo.asm
+                 Trans_s2   0x0000c0    program     static C:\Users\UsuarioF\Desktop\CLASES\6 Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr2\Parte2\Codigo.asm
+                   bucle1   0x000102    program     static C:\Users\UsuarioF\Desktop\CLASES\6 Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr2\Parte2\Codigo.asm
+               bucleVeces   0x0000dc    program     static C:\Users\UsuarioF\Desktop\CLASES\6 Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr2\Parte2\Codigo.asm
+                    salir   0x000110    program     static C:\Users\UsuarioF\Desktop\CLASES\6 Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr2\Parte2\Codigo.asm
+
+
+
+                              Symbols - Sorted by Address
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                   Inicio   0x000020    program     static C:\Users\UsuarioF\Desktop\CLASES\6 Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr2\Parte2\Codigo.asm
+              BucleInicio   0x00005a    program     static C:\Users\UsuarioF\Desktop\CLASES\6 Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr2\Parte2\Codigo.asm
+               EncuestaON   0x000072    program     static C:\Users\UsuarioF\Desktop\CLASES\6 Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr2\Parte2\Codigo.asm
+         Est_transistorio   0x00007c    program     static C:\Users\UsuarioF\Desktop\CLASES\6 Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr2\Parte2\Codigo.asm
+            Ola_Hacia_Izq   0x000086    program     static C:\Users\UsuarioF\Desktop\CLASES\6 Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr2\Parte2\Codigo.asm
+            Ola_Hacia_Der   0x00009c    program     static C:\Users\UsuarioF\Desktop\CLASES\6 Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr2\Parte2\Codigo.asm
+        Detener_Secuencia   0x0000b6    program     static C:\Users\UsuarioF\Desktop\CLASES\6 Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr2\Parte2\Codigo.asm
+               Boton_S3_D   0x0000ba    program     static C:\Users\UsuarioF\Desktop\CLASES\6 Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr2\Parte2\Codigo.asm
+                 Trans_s2   0x0000c0    program     static C:\Users\UsuarioF\Desktop\CLASES\6 Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr2\Parte2\Codigo.asm
+             Continuar_s2   0x0000ca    program     static C:\Users\UsuarioF\Desktop\CLASES\6 Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr2\Parte2\Codigo.asm
+                 DelayXms   0x0000da    program     static C:\Users\UsuarioF\Desktop\CLASES\6 Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr2\Parte2\Codigo.asm
+               bucleVeces   0x0000dc    program     static C:\Users\UsuarioF\Desktop\CLASES\6 Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr2\Parte2\Codigo.asm
+               Delay100ms   0x0000e8    program     static C:\Users\UsuarioF\Desktop\CLASES\6 Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr2\Parte2\Codigo.asm
+                 Delay1ms   0x0000f8    program     static C:\Users\UsuarioF\Desktop\CLASES\6 Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr2\Parte2\Codigo.asm
+                   bucle1   0x000102    program     static C:\Users\UsuarioF\Desktop\CLASES\6 Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr2\Parte2\Codigo.asm
+                    salir   0x000110    program     static C:\Users\UsuarioF\Desktop\CLASES\6 Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr2\Parte2\Codigo.asm
+           InterrupcionHP   0x000116    program     static C:\Users\UsuarioF\Desktop\CLASES\6 Sexto ciclo\Microprocesadores\Practicas\Codigos\Pr2\Parte2\Codigo.asm
+
+
